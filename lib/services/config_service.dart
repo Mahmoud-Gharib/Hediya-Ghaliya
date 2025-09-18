@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
 class ConfigService {
   static const String _configUrl =
@@ -34,49 +35,57 @@ class ConfigService {
       }
     }
 
-    // Try to fetch from remote first (works on mobile, may fail on web due to CORS)
-    try {
-      print('🌐 محاولة تحميل الإعدادات من: $_configUrl');
-      final response = await http.get(
-        Uri.parse(_configUrl),
-        headers: {
-          'Accept': 'application/json',
-          'Cache-Control': 'no-cache',
-        },
-      ).timeout(const Duration(seconds: 10));
-      
-      print('📡 استجابة الخادم: ${response.statusCode}');
-      
-      if (response.statusCode == 200) {
-        final configData = json.decode(response.body);
-        print('✅ تم تحميل الإعدادات بنجاح من GitHub');
+    // Check if we're on mobile platform - only try GitHub on mobile
+    if (!kIsWeb) {
+      // Mobile platform - try to fetch from GitHub
+      try {
+        print('📱 منصة موبايل - محاولة تحميل الإعدادات من: $_configUrl');
+        final response = await http.get(
+          Uri.parse(_configUrl),
+          headers: {
+            'Accept': 'application/json',
+            'Cache-Control': 'no-cache',
+          },
+        ).timeout(const Duration(seconds: 10));
         
-        // Cache the new config
-        await prefs.setString(_cacheKey, response.body);
-        await prefs.setInt(_cacheTimeKey, currentTime);
+        print('📡 استجابة الخادم: ${response.statusCode}');
         
-        _cachedConfig = configData;
-        return configData;
-      } else {
-        print('❌ فشل تحميل الإعدادات: ${response.statusCode}');
-        throw Exception('Failed to load config: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('💥 خطأ في تحميل الإعدادات من GitHub: $e');
-      
-      // If network fails, try to use cached config even if expired
-      if (cachedConfigString != null) {
-        try {
-          print('🔄 استخدام الإعدادات المحفوظة مؤقتاً');
-          _cachedConfig = json.decode(cachedConfigString);
-          return _cachedConfig!;
-        } catch (e) {
-          print('❌ الإعدادات المحفوظة تالفة');
+        if (response.statusCode == 200) {
+          final configData = json.decode(response.body);
+          print('✅ تم تحميل الإعدادات بنجاح من GitHub على الموبايل');
+          
+          // Cache the new config
+          await prefs.setString(_cacheKey, response.body);
+          await prefs.setInt(_cacheTimeKey, currentTime);
+          
+          _cachedConfig = configData;
+          return configData;
+        } else {
+          print('❌ فشل تحميل الإعدادات: ${response.statusCode}');
+          throw Exception('Failed to load config: ${response.statusCode}');
         }
+      } catch (e) {
+        print('💥 خطأ في تحميل الإعدادات من GitHub على الموبايل: $e');
+        
+        // If network fails, try to use cached config even if expired
+        if (cachedConfigString != null) {
+          try {
+            print('🔄 استخدام الإعدادات المحفوظة مؤقتاً');
+            _cachedConfig = json.decode(cachedConfigString);
+            return _cachedConfig!;
+          } catch (e) {
+            print('❌ الإعدادات المحفوظة تالفة');
+          }
+        }
+        
+        // Fallback to default config if everything fails
+        print('🔧 استخدام الإعدادات الافتراضية على الموبايل');
+        _cachedConfig = _getFallbackConfig();
+        return _cachedConfig!;
       }
-      
-      // Fallback to default config if everything fails
-      print('🔧 استخدام الإعدادات الافتراضية');
+    } else {
+      // Web platform - use fallback config directly to avoid CORS
+      print('🌐 منصة ويب - استخدام الإعدادات المحلية (تجنب مشاكل CORS)');
       _cachedConfig = _getFallbackConfig();
       return _cachedConfig!;
     }
@@ -149,16 +158,16 @@ class ConfigService {
     return {
       'tokens': {
         'users_token':
-            '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',
+            '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',
         'app_upload_token':
             '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',
       },
       'github_configs': {
         'users': {
           'token':
-              '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',
-          'owner': 'Gharib-Elshazly',
-          'repo': 'Users',
+              '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',
+          'owner': 'mahmoud-gharib',
+          'repo': 'app_upload',
         },
         'app_upload': {
           'token':
