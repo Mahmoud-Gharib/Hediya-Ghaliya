@@ -6,7 +6,8 @@ import '../models/package.dart';
 import 'sign_in_page.dart';
 import '../services/navigation.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatefulWidget 
+{
   static const routeName = '/home';
   const HomePage({super.key});
 
@@ -425,7 +426,7 @@ class _DashboardCards extends StatelessWidget {
           children: [
             Expanded(child: _SmallCard(title: 'هداياي', subtitle: 'آخر الهدايا', icon: Icons.card_giftcard, route: '/gifts', phone: phone)),
             const SizedBox(width: 12),
-            const Expanded(child: _SmallCard(title: 'المسودات', subtitle: 'أكمل ما بدأته', icon: Icons.edit_note, route: '/drafts')),
+            Expanded(child: _SmallCard(title: 'آخر هدية', subtitle: 'آخر هدية أنشأتها', icon: Icons.star, route: '/latest-gift', phone: phone)),
           ],
         ),
         const SizedBox(height: 12),
@@ -571,7 +572,7 @@ class _MainDrawerState extends State<_MainDrawer> {
               _drawerItem(context, icon: Icons.home_outlined, label: 'الرئيسية', route: '/home'),
               _drawerItem(context, icon: Icons.card_giftcard, label: 'إنشاء هدية', route: '/create'),
               _drawerItem(context, icon: Icons.list_alt_outlined, label: 'هداياي', route: '/gifts'),
-              _drawerItem(context, icon: Icons.edit_note, label: 'المسودات', route: '/drafts'),
+              _drawerItem(context, icon: Icons.star, label: 'آخر هدية', route: '/latest-gift'),
               
               _drawerItem(context, icon: Icons.grid_view, label: 'القوالب الجاهزة', route: '/templates'),
               _drawerItemWithBadge(context,

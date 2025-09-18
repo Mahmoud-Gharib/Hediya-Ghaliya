@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/advanced_notifications_service.dart';
+import '../services/config_service.dart';
 
 // Avoid importing main.dart to prevent circular dependencies.
 
-// WARNING: Embedding tokens in client apps is insecure. Consider moving to a backend.
 Future<Map<String, dynamic>?> loginWithGitHub(String phone, String password) async {
-  const String token = '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';
-  const String owner = 'mahmoud-gharib';
-  const String repo = 'app_upload';
+  // Get configuration from remote config service
+  final config = await ConfigService.getGitHubConfig('users');
+  final String token = config['token']!;
+  final String owner = config['owner']!;
+  final String repo = config['repo']!;
   const String path = 'users.json';
 
   final url = Uri.parse('https://api.github.com/repos/$owner/$repo/contents/$path');

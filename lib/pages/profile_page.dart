@@ -43,9 +43,9 @@ class _ProfilePageState extends State<ProfilePage> {
     }
     setState(() => savingName = true);
 
-    const String token = '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';
-    const String owner = 'mahmoud-gharib';
-    const String repo = 'app_upload';
+    const String token = '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';
+    const String owner = 'Gharib-Elshazly';
+    const String repo = 'Users';
     const String path = 'users.json';
     final url = Uri.parse('https://api.github.com/repos/$owner/$repo/contents/$path');
 

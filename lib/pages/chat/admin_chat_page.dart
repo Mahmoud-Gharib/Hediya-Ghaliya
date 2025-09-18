@@ -681,9 +681,7 @@ class _AdminChatPageState extends State<AdminChatPage> {
           borderRadius: BorderRadius.circular(8),
           child: Image.network(
             m.attachment?.fileUrl ?? '',
-            width: 200,
-            height: 150,
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) return child;
               return Container(
@@ -1115,9 +1113,9 @@ class _AdminVoiceBubbleState extends State<_AdminVoiceBubble> {
       return Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.blue.withOpacity(0.2),
+          color: const Color(0xFF8E24AA).withOpacity(0.2),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.blue.withOpacity(0.3)),
+          border: Border.all(color: const Color(0xFF8E24AA).withOpacity(0.3)),
         ),
         child: const SizedBox(width: 180, height: 24, child: LinearProgressIndicator()),
       );
@@ -1126,14 +1124,14 @@ class _AdminVoiceBubbleState extends State<_AdminVoiceBubble> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.2),
+        color: const Color(0xFF8E24AA).withOpacity(0.2),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.blue.withOpacity(0.3)),
+        border: Border.all(color: const Color(0xFF8E24AA).withOpacity(0.3)),
       ),
       child: Row(
         children: [
           Container(
-            decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(20)),
+            decoration: BoxDecoration(color: const Color(0xFF8E24AA), borderRadius: BorderRadius.circular(20)),
             child: IconButton(
               icon: Icon(_player.playing ? Icons.pause : Icons.play_arrow, color: Colors.white, size: 24),
               onPressed: () async {
@@ -1164,7 +1162,7 @@ class _AdminVoiceBubbleState extends State<_AdminVoiceBubble> {
             ),
           ),
           const SizedBox(width: 8),
-          Text(_fmt(_pos) + '/' + _fmt(_dur), style: const TextStyle(color: Colors.blue, fontSize: 12, fontWeight: FontWeight.bold)),
+          Text(_fmt(_pos) + '/' + _fmt(_dur), style: const TextStyle(color: Color(0xFF8E24AA), fontSize: 12, fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -1195,7 +1193,7 @@ class _AdminAnimatedWaves extends StatelessWidget {
               duration: const Duration(milliseconds: 200),
               width: 3,
               height: h(i),
-              decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(2)),
+              decoration: BoxDecoration(color: const Color(0xFF8E24AA), borderRadius: BorderRadius.circular(2)),
             ),
           );
         }),
