@@ -17,10 +17,13 @@
 # تأكد من جعله عام (Public) ليكون قابل للقراءة بدون access token
 ```
 
-### 2. إنشاء ملف الـ Token
+### 2. إنشاء ملفات الـ Tokens
 ```bash
-# إنشاء ملف github_token.txt في الـ repository
-# ضع الـ GitHub token الخاص بك في هذا الملف
+# إنشاء ملفات منفصلة لكل repository:
+# user_token.txt - للـ Users repository
+# app_upload_token.txt - للـ app_upload repository  
+# hediya_ghaliya_token.txt - للـ Hediya-Ghaliya repository
+# ضع الـ GitHub token المناسب في كل ملف
 ```
 
 ### 3. تحديث إعدادات الخدمة
@@ -30,7 +33,13 @@
 // تحديث هذه المتغيرات حسب الـ repository الخاص بك
 static const String _tokenRepoOwner = 'mahmoud-gharib';
 static const String _tokenRepoName = 'token-storage'; // اسم الـ repo الجديد
-static const String _tokenFilePath = 'github_token.txt'; // مسار ملف الـ token
+
+// مسارات ملفات الـ tokens لكل repository
+static const Map<String, String> _tokenFiles = {
+  'Users': 'user_token.txt',
+  'app_upload': 'app_upload_token.txt',
+  'Hediya-Ghaliya': 'hediya_ghaliya_token.txt',
+};
 ```
 
 ## الملفات المحدثة
