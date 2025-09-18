@@ -9,16 +9,13 @@ import 'services/navigation.dart';
 import 'pages/sign_in_page.dart';
 import 'pages/sign_up_page.dart';
 import 'pages/home_page.dart';
-
 import 'pages/create_gift_page.dart';
 import 'pages/my_gifts_page.dart';
-
 import 'pages/profile_page.dart';
 import 'pages/notifications_page.dart';
 import 'pages/about_page.dart';
 import 'pages/chat/user_chat_page.dart';
 import 'pages/chat/admin_chat_page.dart';
-
 import 'pages/package_selection_page.dart';
 import 'pages/SelectOccasionPage.dart';
 import 'pages/SelectRelationshipPage.dart';
@@ -28,9 +25,7 @@ import 'pages/MessageInputPage.dart';
 import 'pages/UploadImagesPage.dart';
 import 'pages/UploadMusicPage.dart';
 import 'pages/UploadVideoPage.dart';
-
 import 'pages/PreviewGiftPage.dart';
-
 import 'pages/free_gift_creator.dart';
 import 'pages/latest_gift_page.dart';
 
