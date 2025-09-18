@@ -2,14 +2,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/github_token_service.dart';
 
-// WARNING: Embedding tokens in client apps is insecure. Consider moving to a backend.
+// تم تحسين الأمان: الـ token يتم جلبه من GitHub repository
 Future<void> saveUserToGitHub({
   required String name,
   required String phone,
   required String password,
 }) async {
-  const String token = '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';
+  final String token = await GitHubTokenService.getToken();
   const String owner = 'mahmoud-gharib';
   const String repo = 'Users';
   const String path = 'users.json';

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../services/github_token_service.dart';
 
 class ProfilePage extends StatefulWidget {
   static const routeName = '/profile';
@@ -43,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
     setState(() => savingName = true);
 
-    const String token = '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';
+    final String token = await GitHubTokenService.getToken();
     const String owner = 'mahmoud-gharib';
     const String repo = 'Users';
     const String path = 'users.json';
@@ -129,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
     setState(() => savingPw = true);
 
-    const String token = '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';
+    final String token = await GitHubTokenService.getToken();
     const String owner = 'mahmoud-gharib';
     const String repo = 'Users';
     const String path = 'users.json';
@@ -214,7 +215,7 @@ class _ProfilePageState extends State<ProfilePage> {
     if (phoneArg == null) return;
     setState(() => deleting = true);
 
-    const String token = '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';
+    final String token = await GitHubTokenService.getToken();
     const String owner = 'mahmoud-gharib';
     const String repo = 'Users';
     const String path = 'users.json';
@@ -280,7 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
       error = null;
     });
 
-    const String token = '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';
+    final String token = await GitHubTokenService.getToken();
     const String owner = 'mahmoud-gharib';
     const String repo = 'Users';
     const String path = 'users.json';

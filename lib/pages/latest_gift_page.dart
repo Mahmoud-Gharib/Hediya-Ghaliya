@@ -18,7 +18,7 @@ class LatestGiftPage extends StatefulWidget {
 
 class _LatestGiftPageState extends State<LatestGiftPage> {
   final String username = 'mahmoud-gharib';
-  final List<String> repos = ['app_upload', 'hediya_ghaliya', 'gifts_repo']; // Multiple repositories
+  final List<String> repos = ['app_upload', 'Hediya-Ghaliya']; // Multiple repositories
   final String fileKeyword = 'apk';
   String? userPhone;
 
