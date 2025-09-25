@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:hediya_ghaliya/Services/GithubToken.dart';
 
 enum MessageType {
   text,
@@ -146,7 +147,6 @@ class UserRef {
 }
 
 class GitHubChatApi {
-  static const String token = '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';
   static const String owner = 'mahmoud-gharib';
   static const String repo = 'app_upload';
 
@@ -156,9 +156,10 @@ class GitHubChatApi {
   static Uri _usersUrl() => Uri.parse(
       'https://api.github.com/repos/$owner/$repo/contents/users.json');
 
-  static Map<String, String> _headers({String? etag}) {
+  static Future<Map<String, String>> _headers({String? etag}) async {
+    final token = await GitHubTokenService.getUserToken();
     final h = <String, String>{
-      'Authorization': 'Bearer $token',
+      'Authorization': 'token $token',
       'Accept': 'application/vnd.github+json',
       'Content-Type': 'application/json',
       'User-Agent': 'hediya-ghaliya-app',
@@ -169,7 +170,7 @@ class GitHubChatApi {
 
   static Future<ChatData> fetchChat(String phone, {String? etag}) async {
     print('📥 جلب المحادثة للرقم: $phone');
-    final res = await http.get(_fileUrl(phone), headers: _headers(etag: etag));
+    final res = await http.get(_fileUrl(phone), headers: await _headers(etag: etag));
     
     if (res.statusCode == 304) {
       print('📄 لا توجد تحديثات جديدة (304)');
@@ -217,7 +218,7 @@ class GitHubChatApi {
     final b64 = base64.encode(utf8.encode(content));
     final res = await http.put(
       _fileUrl(phone),
-      headers: _headers(),
+      headers: await _headers(),
       body: json.encode({
         'message': 'Update chat for $phone',
         'content': b64,
@@ -233,7 +234,7 @@ class GitHubChatApi {
   }
 
   static Future<List<UserRef>> listUsers() async {
-    final res = await http.get(_usersUrl(), headers: _headers());
+    final res = await http.get(_usersUrl(), headers: await _headers());
     if (res.statusCode != 200) return [];
     final data = json.decode(res.body) as Map<String, dynamic>;
     final String encoded = (data['content'] ?? '').toString().replaceAll('\n', '');
@@ -261,7 +262,7 @@ class GitHubChatApi {
       
       final res = await http.put(
         url,
-        headers: _headers(),
+        headers: await _headers(),
         body: json.encode({
           'message': 'Upload file: $fileName',
           'content': b64Content,

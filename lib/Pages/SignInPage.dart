@@ -2,53 +2,64 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../services/advanced_notifications_service.dart';
-import '../services/github_token_service.dart';
 
-// Avoid importing main.dart to prevent circular dependencies.
+import 'package:hediya_ghaliya/Services/GithubToken.dart';
+import 'package:hediya_ghaliya/Services/AdvancedNotifications.dart';
 
-// تم تحسين الأمان: الـ token يتم جلبه من GitHub repository
-Future<Map<String, dynamic>?> loginWithGitHub(
+Future<Map<String, dynamic>?> loginWithGitHub
+(
   String phone,
   String password,
-) async {
-  final String token = await GitHubTokenService.getToken();
+) 
+async 
+{
+  final String token = await GitHubTokenService.getUserToken();
   const String owner = 'mahmoud-gharib';
   const String repo = 'Users';
   const String path = 'users.json';
 
-  final url = Uri.parse(
+  final url = Uri.parse
+  (
     'https://api.github.com/repos/$owner/$repo/contents/$path',
   );
-  final response = await http.get(
+  final response = await http.get
+  (
     url,
-    headers: {
+    headers: 
+	{
       'Authorization': 'token $token',
       'Accept': 'application/vnd.github+json',
     },
   );
 
-  if (response.statusCode == 200) {
+  if (response.statusCode == 200) 
+  {
     final jsonResponse = json.decode(response.body);
     final String encodedContent = jsonResponse['content'];
-    final decoded = utf8.decode(
+    final decoded = utf8.decode
+	(
       base64.decode(encodedContent.replaceAll('\n', '')),
     );
     final data = json.decode(decoded);
 
     final List users = data['users'];
-    for (final user in users) {
-      if (user['phone'] == phone && user['password'] == password) {
+    for (final user in users) 
+	{
+      if (user['phone'] == phone && user['password'] == password) 
+	  {
         return Map<String, dynamic>.from(user);
       }
     }
     return null;
-  } else {
+  } 
+  else 
+  {
     throw Exception('تعذر تحميل البيانات (${response.statusCode})');
   }
 }
 
-class SignInPage extends StatefulWidget {
+class SignInPage extends StatefulWidget 
+{
   static const routeName = '/signin';
   const SignInPage({super.key});
 
@@ -57,7 +68,8 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin 
+{
   final _formKey = GlobalKey<FormState>();
   String phone = '';
   String password = '';
@@ -70,59 +82,71 @@ class _SignInPageState extends State<SignInPage>
   late final Animation<double> _slideForm;
 
   @override
-  void initState() {
+  void initState() 
+  {
     super.initState();
-    _c = AnimationController(
+    _c = AnimationController
+	(
       vsync: this,
       duration: const Duration(milliseconds: 1000),
     )..forward();
-    _fadeTop = CurvedAnimation(
+    _fadeTop = CurvedAnimation
+	(
       parent: _c,
       curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
     );
-    _slideForm = CurvedAnimation(
+    _slideForm = CurvedAnimation
+	(
       parent: _c,
       curve: const Interval(0.2, 1.0, curve: Curves.easeOutCubic),
     );
   }
 
   @override
-  void dispose() {
+  void dispose() 
+  {
     _c.dispose();
     super.dispose();
   }
 
-  Future<void> _loginUser() async {
+  Future<void> _loginUser() async 
+  {
     if (!_formKey.currentState!.validate()) return;
-    setState(() {
+    setState(() 
+	{
       errorMessage = '';
       isLoading = true;
     });
 
-    try {
+    try 
+	{
       final user = await loginWithGitHub(phone, password);
       if (!mounted) return;
-      if (user != null) {
-        // Save login state
+      if (user != null) 
+	  {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('user_phone', phone);
         await prefs.setBool('is_logged_in', true);
-
-        // Initialize advanced notifications service
-        await AdvancedNotificationsService.initialize(phone);
+        //await AdvancedNotificationsService.initialize(phone);
 
         if (!mounted) return;
-        Navigator.pushReplacementNamed(
+        Navigator.pushReplacementNamed
+		(
           context,
           '/home',
           arguments: {'phone': phone},
         );
-      } else {
+      } 
+	  else 
+	  {
         setState(() => errorMessage = 'رقم الهاتف أو كلمة المرور غير صحيحة');
       }
-    } catch (e) {
+    } 
+	catch (e) 
+	{
       if (!mounted) return;
-      setState(() {
+      setState(() 
+	  {
         final s = e.toString();
         final isNetwork =
             s.contains('SocketException') ||
@@ -133,35 +157,51 @@ class _SignInPageState extends State<SignInPage>
                 ? 'خطأ في الاتصال:الرجاء التأكد من الاتصال ب الانترنت'
                 : s;
       });
-    } finally {
+    } 
+	finally 
+	{
       if (mounted) setState(() => isLoading = false);
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
+  Widget build(BuildContext context) 
+  {
+    return Scaffold
+	(
+      body: Container
+	  (
+        decoration: const BoxDecoration
+		(
+          gradient: LinearGradient
+		  (
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [Color(0xFF311B92), Color(0xFF8E24AA), Color(0xFFFF6F61)],
           ),
         ),
-        child: SafeArea(
-          child: Padding(
+        child: SafeArea
+		(
+          child: Padding
+		  (
             padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                FadeTransition(
+            child: Column
+			(
+              children: 
+			  [
+                FadeTransition
+				(
                   opacity: _fadeTop,
-                  child: Row(
+                  child: Row
+				  (
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Hero(
-                        tag: 'gift_logo',
-                        child: Image(
+                    children: const 
+					[
+                      Hero
+					  (
+                        tag: 'signin_logo',
+                        child: Image
+						(
                           image: AssetImage('assets/images/Logo.png'),
                           width: 110,
                           height: 110,
@@ -172,37 +212,50 @@ class _SignInPageState extends State<SignInPage>
                   ),
                 ),
                 const SizedBox(height: 20),
-                Expanded(
-                  child: SlideTransition(
-                    position: Tween<Offset>(
+                Expanded
+				(
+                  child: SlideTransition
+				  (
+                    position: Tween<Offset>
+					(
                       begin: const Offset(0, 0.15),
                       end: Offset.zero,
                     ).animate(_slideForm),
-                    child: Container(
+                    child: Container
+					(
                       padding: const EdgeInsets.all(18),
-                      decoration: BoxDecoration(
+                      decoration: BoxDecoration
+					  (
                         color: Colors.white.withOpacity(0.12),
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
+                        border: Border.all
+						(
                           color: Colors.white.withOpacity(0.2),
                         ),
-                        boxShadow: [
-                          BoxShadow(
+                        boxShadow: 
+						[
+                          BoxShadow
+						  (
                             color: Colors.black.withOpacity(0.25),
                             blurRadius: 24,
                             offset: const Offset(0, 12),
                           ),
                         ],
                       ),
-                      child: Form(
+                      child: Form
+					  (
                         key: _formKey,
-                        child: ListView(
-                          children: [
+                        child: ListView
+						(
+                          children: 
+						  [
                             const SizedBox(height: 6),
-                            const Text(
+                            const Text
+							(
                               'تسجيل الدخول',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: TextStyle
+							  (
                                 fontSize: 24,
                                 fontWeight: FontWeight.w800,
                                 color: Colors.white,
@@ -210,38 +263,47 @@ class _SignInPageState extends State<SignInPage>
                             ),
                             const SizedBox(height: 14),
                             if (errorMessage.isNotEmpty)
-                              Container(
+                              Container
+							  (
                                 padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
+                                decoration: BoxDecoration
+								(
                                   color: Colors.redAccent.withOpacity(0.15),
                                   borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
+                                  border: Border.all
+								  (
                                     color: Colors.redAccent.withOpacity(0.4),
                                   ),
                                 ),
-                                child: Text(
+                                child: Text
+								(
                                   errorMessage,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(color: Colors.white),
                                 ),
                               ),
                             const SizedBox(height: 12),
-                            const Align(
+                            const Align
+							(
                               alignment: Alignment.centerRight,
-                              child: Text(
+                              child: Text
+							  (
                                 'رقم الهاتف',
-                                style: TextStyle(
+                                style: TextStyle
+								(
                                   fontSize: 13,
                                   color: Colors.white70,
                                 ),
                               ),
                             ),
-                            TextFormField(
+                            TextFormField
+							(
                               keyboardType: TextInputType.phone,
                               style: const TextStyle(color: Colors.white),
                               decoration: _inputDecoration(hint: '*********01'),
                               onChanged: (v) => phone = v.trim(),
-                              validator: (v) {
+                              validator: (v) 
+							  {
                                 if (v == null || v.isEmpty)
                                   return 'الرجاء إدخال رقم الهاتف';
                                 if (!RegExp(r'^\d{8,15}$').hasMatch(v))
@@ -250,37 +312,46 @@ class _SignInPageState extends State<SignInPage>
                               },
                             ),
                             const SizedBox(height: 16),
-                            const Align(
+                            const Align
+							(
                               alignment: Alignment.centerRight,
-                              child: Text(
+                              child: Text
+							  (
                                 'كلمة المرور',
-                                style: TextStyle(
+                                style: TextStyle
+								(
                                   fontSize: 13,
                                   color: Colors.white70,
                                 ),
                               ),
                             ),
-                            TextFormField(
+                            TextFormField
+							(
                               obscureText: obscurePassword,
                               style: const TextStyle(color: Colors.white),
-                              decoration: _inputDecoration(
+                              decoration: _inputDecoration
+							  (
                                 hint: '•••••••',
-                                suffixIcon: IconButton(
-                                  icon: Icon(
+                                suffixIcon: IconButton
+								(
+                                  icon: Icon
+								  (
                                     obscurePassword
                                         ? Icons.visibility_outlined
                                         : Icons.visibility_off_outlined,
                                     color: Colors.white70,
                                   ),
                                   onPressed:
-                                      () => setState(
+                                      () => setState
+									  (
                                         () =>
                                             obscurePassword = !obscurePassword,
                                       ),
                                 ),
                               ),
                               onChanged: (v) => password = v,
-                              validator: (v) {
+                              validator: (v) 
+							  {
                                 if (v == null || v.isEmpty)
                                   return 'الرجاء إدخال كلمة المرور';
                                 if (v.length < 6)
@@ -289,21 +360,27 @@ class _SignInPageState extends State<SignInPage>
                               },
                             ),
                             const SizedBox(height: 22),
-                            SizedBox(
+                            SizedBox
+							(
                               height: 52,
-                              child: ElevatedButton(
+                              child: ElevatedButton
+							  (
                                 onPressed: isLoading ? null : _loginUser,
-                                style: ElevatedButton.styleFrom(
+                                style: ElevatedButton.styleFrom
+								(
                                   padding: EdgeInsets.zero,
-                                  shape: RoundedRectangleBorder(
+                                  shape: RoundedRectangleBorder
+								  (
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   backgroundColor: Colors.transparent,
                                   shadowColor: Colors.transparent,
                                 ),
                                 child: Ink(
-                                  decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
+                                  decoration: BoxDecoration
+								  (
+                                    gradient: const LinearGradient
+									(
                                       colors: [
                                         Color(0xFFFF6F61),
                                         Color(0xFF8E24AA),
@@ -311,20 +388,25 @@ class _SignInPageState extends State<SignInPage>
                                     ),
                                     borderRadius: BorderRadius.circular(16),
                                   ),
-                                  child: Center(
+                                  child: Center
+								  (
                                     child:
                                         isLoading
-                                            ? const SizedBox(
+                                            ? const SizedBox
+											(
                                               width: 22,
                                               height: 22,
-                                              child: CircularProgressIndicator(
+                                              child: CircularProgressIndicator
+											  (
                                                 strokeWidth: 2.6,
                                                 color: Colors.white,
                                               ),
                                             )
-                                            : const Text(
+                                            : const Text
+											(
                                               'دخول',
-                                              style: TextStyle(
+                                              style: TextStyle
+											  (
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w800,
                                               ),
@@ -334,15 +416,18 @@ class _SignInPageState extends State<SignInPage>
                               ),
                             ),
                             const SizedBox(height: 14),
-                            TextButton(
+                            TextButton
+							(
                               onPressed:
                                   isLoading
                                       ? null
-                                      : () => Navigator.pushReplacementNamed(
+                                      : () => Navigator.pushReplacementNamed
+									  (
                                         context,
                                         '/signup',
                                       ),
-                              child: const Text(
+                              child: const Text
+							  (
                                 'ليس لديك حساب؟ سجل الآن',
                                 style: TextStyle(color: Colors.white70),
                               ),
@@ -362,18 +447,22 @@ class _SignInPageState extends State<SignInPage>
   }
 }
 
-InputDecoration _inputDecoration({String? hint, Widget? suffixIcon}) {
-  return InputDecoration(
+InputDecoration _inputDecoration({String? hint, Widget? suffixIcon}) 
+{
+  return InputDecoration
+  (
     hintText: hint,
     hintStyle: const TextStyle(color: Colors.white54),
     filled: true,
     fillColor: Colors.white.withOpacity(0.06),
     contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-    enabledBorder: OutlineInputBorder(
+    enabledBorder: OutlineInputBorder
+	(
       borderRadius: BorderRadius.circular(12),
       borderSide: BorderSide(color: Colors.white.withOpacity(0.25)),
     ),
-    focusedBorder: OutlineInputBorder(
+    focusedBorder: OutlineInputBorder
+	(
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(color: Colors.white),
     ),

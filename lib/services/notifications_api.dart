@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:hediya_ghaliya/Services/GithubToken.dart';
 
 class NotificationItem {
   final String id;
@@ -52,14 +53,14 @@ class NotificationsData {
 
 class NotificationsApi {
   // Reuse same GitHub repo settings used in GitHubChatApi
-  static const String token = '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';
   static const String owner = 'mahmoud-gharib';
   static const String repo = 'app_upload';
 
   static Uri _fileUrl(String phone) => Uri.parse(
       'https://api.github.com/repos/$owner/$repo/contents/Notifications/$phone.json');
 
-  static Map<String, String> _headers({String? etag}) {
+  static Future<Map<String, String>> _headers({String? etag}) async {
+    final token = await GitHubTokenService.getUserToken();
     final h = <String, String>{
       'Authorization': 'token $token',
       'Accept': 'application/vnd.github+json',
@@ -69,7 +70,7 @@ class NotificationsApi {
   }
 
   static Future<NotificationsData> fetch(String phone, {String? etag}) async {
-    final res = await http.get(_fileUrl(phone), headers: _headers(etag: etag));
+    final res = await http.get(_fileUrl(phone), headers: await _headers(etag: etag));
     if (res.statusCode == 304) {
       return NotificationsData(items: const [], sha: null, etag: etag, notModified: true);
     }
@@ -95,7 +96,7 @@ class NotificationsApi {
     final b64 = base64.encode(utf8.encode(content));
     final res = await http.put(
       _fileUrl(phone),
-      headers: _headers(),
+      headers: await _headers(),
       body: json.encode({
         'message': 'Update notifications for $phone',
         'content': b64,

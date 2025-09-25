@@ -1,66 +1,61 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-/// خدمة لجلب الـ GitHub token من ملف .txt في repository
-class GitHubTokenService {
+class GitHubTokenService 
+{
   static String? _cachedToken;
   static DateTime? _lastFetch;
   static const Duration _cacheValidDuration = Duration(minutes: 30);
 
-  // معلومات الـ repository العام الذي يحتوي على ملفات الـ tokens
   static const String _tokenRepoOwner = 'mahmoud-gharib';
-  static const String _tokenRepoName =
-      'token-storage'; // يجب تغيير هذا لاسم الـ repo الصحيح
+  static const String _tokenRepoName  = 'token-storage' ; 
 
-  // مسارات ملفات الـ tokens لكل repository
-  static const Map<String, String> _tokenFiles = {
-    'Users': 'user_token.txt', // للـ Users repository
-    'app_upload': 'app_upload_token.txt', // للـ app_upload repository
-    'Hediya-Ghaliya':
-        'hediya_ghaliya_token.txt', // للـ Hediya-Ghaliya repository
+  static const Map<String, String> _tokenFiles = 
+  {
+    'Users'         : 'user_token.txt', 
+    'app_upload'    : 'app_upload_token.txt', 
+    'Hediya-Ghaliya': 'hediya_ghaliya_token.txt', 
   };
 
-  /// جلب الـ token للـ Users repository (الدالة القديمة للتوافق)
-  static Future<String> getToken() async {
+  static Future<String> getUserToken() async 
+  {
     return getTokenForRepository('Users');
   }
 
-  /// جلب الـ token لـ repository محدد
-  static Future<String> getTokenForRepository(String repositoryName) async {
-    // التحقق من وجود token محفوظ في الذاكرة المؤقتة
-    if (_cachedToken != null &&
-        _lastFetch != null &&
-        DateTime.now().difference(_lastFetch!) < _cacheValidDuration) {
+  static Future<String> getTokenForRepository(String repositoryName) async 
+  {
+    if (_cachedToken != null && _lastFetch != null && DateTime.now().difference(_lastFetch!) < _cacheValidDuration) 
+	{
       return _cachedToken!;
     }
 
-    try {
-      // الحصول على مسار ملف الـ token للـ repository المحدد
+    try 
+	{
       final tokenFilePath = _tokenFiles[repositoryName];
-      if (tokenFilePath == null) {
+      if (tokenFilePath == null) 
+	  {
         throw Exception('لا يوجد token محدد للـ repository: $repositoryName');
       }
 
-      final url = Uri.parse(
+      final url = Uri.parse
+	  (
         'https://api.github.com/repos/$_tokenRepoOwner/$_tokenRepoName/contents/$tokenFilePath',
       );
-      print(
-        '🔍 GitHubTokenService: جلب token لـ $repositoryName من: $tokenFilePath',
-      );
+      print('🔍 GitHubTokenService: جلب token لـ $repositoryName من: $tokenFilePath',);
 
-      final response = await http.get(
+      final response = await http.get
+	  (
         url,
-        headers: {
+        headers: 
+		{
           'Accept': 'application/vnd.github+json',
           'User-Agent': 'Hediya-Ghaliya-App',
         },
       );
+      print('📡 GitHubTokenService: استجابة HTTP لـ $repositoryName: ${response.statusCode}',);
 
-      print(
-        '📡 GitHubTokenService: استجابة HTTP لـ $repositoryName: ${response.statusCode}',
-      );
-
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200) 
+	  {
         final jsonResponse = json.decode(response.body) as Map<String, dynamic>;
         final String encodedContent = jsonResponse['content'];
 
@@ -76,11 +71,12 @@ class GitHubTokenService {
         _lastFetch = DateTime.now();
 
         return token;
-      } else {
-        print(
-          '❌ GitHubTokenService: فشل في جلب token لـ $repositoryName: ${response.statusCode}',
-        );
-        if (response.statusCode == 404) {
+       } 
+	   else 
+	   {
+        print('❌ GitHubTokenService: فشل في جلب token لـ $repositoryName: ${response.statusCode}',);
+        if (response.statusCode == 404) 
+		{
           print(
             '📂 GitHubTokenService: ملف الـ token غير موجود: $tokenFilePath',
           );
