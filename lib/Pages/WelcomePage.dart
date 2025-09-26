@@ -1,7 +1,4 @@
-import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:hediya_ghaliya/Pages/SplashPage.dart';
 import 'package:hediya_ghaliya/Pages/SignInPage.dart';
@@ -96,14 +93,23 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
         ),
         child: SafeArea
 		(
-          child: Padding
+          child: SingleChildScrollView
 		  (
-            padding: const EdgeInsets.all(20.0),
-            child: Column
+            child: ConstrainedBox
 			(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: 
-			  [
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom,
+              ),
+              child: IntrinsicHeight
+			  (
+                child: Padding
+				(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column
+				  (
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: 
+					[
                 const SizedBox(height: 12),
                 Row
 				(
@@ -210,7 +216,10 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                   ),
                 ),
                 const SizedBox(height: 20),
-              ],
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ),

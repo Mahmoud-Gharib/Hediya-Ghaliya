@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:hediya_ghaliya/Pages/WelcomePage.dart';
+import 'package:hediya_ghaliya/Pages/HomePage.dart';
 
 /********************** SplashPage *************************/
 
@@ -50,7 +50,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
       final phone = prefs.getString('phone');
       if (loggedIn && phone != null && phone.isNotEmpty) 
 	  {
-        //Navigator.of(context).pushReplacementNamed(HomePage.routeName, arguments: {'phone': phone});
+        Navigator.of(context).pushReplacementNamed(HomePage.routeName, arguments: {'phone': phone});
       } 
 	  else 
 	  {

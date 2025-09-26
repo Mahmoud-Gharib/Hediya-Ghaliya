@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:hediya_ghaliya/Pages/HomePage.dart';
+
 import 'package:hediya_ghaliya/Services/GithubToken.dart';
 import 'package:hediya_ghaliya/Services/AdvancedNotifications.dart';
 
@@ -125,9 +127,9 @@ class _SignInPageState extends State<SignInPage>
       if (user != null) 
 	  {
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('user_phone', phone);
-        await prefs.setBool('is_logged_in', true);
-        //await AdvancedNotificationsService.initialize(phone);
+        await prefs.setString('phone', phone);
+        await prefs.setBool('logged_in', true);
+        await AdvancedNotificationsService.initialize(phone);
 
         if (!mounted) return;
         Navigator.pushReplacementNamed

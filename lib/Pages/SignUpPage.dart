@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:hediya_ghaliya/Pages/HomePage.dart';
+
 import 'package:hediya_ghaliya/Services/GithubToken.dart';
 
 Future<void> saveUserToGitHub
@@ -150,7 +152,7 @@ class _SignUpPageState extends State<SignUpPage> with SingleTickerProviderStateM
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('logged_in', true);
       await prefs.setString('phone', phone);
-      //Navigator.pushReplacementNamed(context, '/home', arguments: {'phone': phone});
+      Navigator.pushReplacementNamed(context, '/home', arguments: {'phone': phone});
     } 
 	catch (e) 
 	{

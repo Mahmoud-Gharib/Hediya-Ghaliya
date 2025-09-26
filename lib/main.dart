@@ -8,6 +8,7 @@ import 'package:hediya_ghaliya/Pages/SplashPage.dart';
 import 'package:hediya_ghaliya/Pages/WelcomePage.dart';
 import 'package:hediya_ghaliya/Pages/SignInPage.dart';
 import 'package:hediya_ghaliya/Pages/SignUpPage.dart';
+import 'package:hediya_ghaliya/Pages/HomePage.dart';
 
 
 /********************** Main *************************/
@@ -79,6 +80,8 @@ class HediyaGhaliaApp extends StatelessWidget
 			WelcomePage.routeName: (_) => const WelcomePage(),
 			SignInPage.routeName : (_) => const SignInPage (),
 			SignUpPage.routeName : (_) => const SignUpPage (),
+			HomePage.routeName   : (_) => const HomePage   (),
+
       },
     );
   }
