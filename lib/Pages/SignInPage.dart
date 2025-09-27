@@ -141,7 +141,7 @@ class _SignInPageState extends State<SignInPage>
       } 
 	  else 
 	  {
-        setState(() => errorMessage = 'رقم الهاتف أو كلمة المرور غير صحيحة');
+        setState(() => errorMessage = 'البيانات المدخلة غير صحيحة، تأكد من رقم الهاتف وكلمة المرور');
       }
     } 
 	catch (e) 
@@ -267,21 +267,52 @@ class _SignInPageState extends State<SignInPage>
                             if (errorMessage.isNotEmpty)
                               Container
 							  (
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(14),
+                                margin: const EdgeInsets.symmetric(vertical: 8),
                                 decoration: BoxDecoration
 								(
-                                  color: Colors.redAccent.withOpacity(0.15),
-                                  borderRadius: BorderRadius.circular(12),
+                                  gradient: LinearGradient
+								  (
+                                    colors: [
+                                      Colors.orange.withOpacity(0.1),
+                                      Colors.amber.withOpacity(0.1),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
                                   border: Border.all
 								  (
-                                    color: Colors.redAccent.withOpacity(0.4),
+                                    color: Colors.amber.withOpacity(0.3),
+                                    width: 1.5,
                                   ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.amber.withOpacity(0.1),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
                                 ),
-                                child: Text
+                                child: Row
 								(
-                                  errorMessage,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Colors.white),
+                                  children: [
+                                    Icon(
+                                      Icons.info_outline_rounded,
+                                      color: Colors.amber.shade300,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text
+									  (
+                                        errorMessage,
+                                        style: TextStyle(
+                                          color: Colors.amber.shade100,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             const SizedBox(height: 12),
@@ -302,14 +333,14 @@ class _SignInPageState extends State<SignInPage>
 							(
                               keyboardType: TextInputType.phone,
                               style: const TextStyle(color: Colors.white),
-                              decoration: _inputDecoration(hint: '*********01'),
+                              decoration: _inputDecoration(hint: '01xxxxxxxxx'),
                               onChanged: (v) => phone = v.trim(),
                               validator: (v) 
 							  {
                                 if (v == null || v.isEmpty)
                                   return 'الرجاء إدخال رقم الهاتف';
-                                if (!RegExp(r'^\d{8,15}$').hasMatch(v))
-                                  return 'رقم الهاتف غير صالح';
+                                if (!RegExp(r'^01\d{9}$').hasMatch(v))
+                                  return 'رقم الهاتف يجب أن يكون 11 رقم ويبدأ بـ 01';
                                 return null;
                               },
                             ),
@@ -467,6 +498,22 @@ InputDecoration _inputDecoration({String? hint, Widget? suffixIcon})
 	(
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(color: Colors.white),
+    ),
+    errorBorder: OutlineInputBorder
+	(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Colors.amber.withOpacity(0.6), width: 1.5),
+    ),
+    focusedErrorBorder: OutlineInputBorder
+	(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Colors.amber.shade300, width: 2),
+    ),
+    errorStyle: TextStyle(
+      color: Colors.amber.shade200,
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      height: 1.2,
     ),
     suffixIcon: suffixIcon,
   );

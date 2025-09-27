@@ -1,18 +1,20 @@
-import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:hediya_ghaliya/Pages/SplashPage.dart';
 import 'package:hediya_ghaliya/Pages/WelcomePage.dart';
 import 'package:hediya_ghaliya/Pages/SignInPage.dart';
 import 'package:hediya_ghaliya/Pages/SignUpPage.dart';
 import 'package:hediya_ghaliya/Pages/HomePage.dart';
+import 'package:hediya_ghaliya/Pages/ProfilePage.dart';
+import 'package:hediya_ghaliya/Pages/AboutPage.dart';
+
+import 'package:hediya_ghaliya/Services/Navigation.dart';
+
 
 
 /********************** Main *************************/
-
 Future<void> main() async 
 {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,7 +56,7 @@ class HediyaGhaliaApp extends StatelessWidget
 	(
       debugShowCheckedModeBanner: false,
       title: 'هدية غالية',
-      //navigatorKey: appNavigatorKey,
+      navigatorKey: appNavigatorKey,
       themeMode: themeMode,
       locale: locale,
       theme: ThemeData
@@ -81,6 +83,10 @@ class HediyaGhaliaApp extends StatelessWidget
 			SignInPage.routeName : (_) => const SignInPage (),
 			SignUpPage.routeName : (_) => const SignUpPage (),
 			HomePage.routeName   : (_) => const HomePage   (),
+			ProfilePage.routeName: (_) => const ProfilePage(),
+			
+			AboutPage.routeName  : (_) => const AboutPage  (),
+
 
       },
     );

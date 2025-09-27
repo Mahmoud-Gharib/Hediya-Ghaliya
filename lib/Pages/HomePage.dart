@@ -738,6 +738,7 @@ class _MainDrawerState extends State<_MainDrawer>
             ],
           ),
         ),
+		
       ),
     );
   }
@@ -824,6 +825,14 @@ class _MainDrawerState extends State<_MainDrawer>
           if (ModalRoute.of(context)?.settings.name != route) 
 		  {
             Navigator.pushReplacementNamed(context, route, arguments: {'phone': widget.phone});
+          }
+          return;
+        }
+        if (route == '/about') 
+		{
+          if (ModalRoute.of(context)?.settings.name != route) 
+		  {
+            Navigator.pushReplacementNamed(context, route);
           }
           return;
         }
