@@ -7,8 +7,8 @@ class GitHubTokenService
   static DateTime? _lastFetch;
   static const Duration _cacheValidDuration = Duration(minutes: 30);
 
-  static const String _tokenRepoOwner = 'mahmoud-gharib';
-  static const String _tokenRepoName  = 'token-storage' ; 
+  static const String _tokenRepoOwner = 'Hed-Mahmoud-iya-Gha-Gharib-liya';
+  static const String _tokenRepoName  = 'token-storage'; 
 
   static const Map<String, String> _tokenFiles = 
   {

@@ -145,6 +145,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                       Wrap
 					  (
                         alignment: WrapAlignment.center,
+                        textDirection: TextDirection.rtl,
                         spacing: 6,
                         runSpacing: 8,
                         children: _buildStaggeredWords
@@ -159,6 +160,7 @@ class _WelcomePageState extends State<WelcomePage> with SingleTickerProviderStat
                       Wrap
 					  (
                         alignment: WrapAlignment.center,
+                        textDirection: TextDirection.rtl,
                         spacing: 6,
                         runSpacing: 8,
                         children: _buildStaggeredWords

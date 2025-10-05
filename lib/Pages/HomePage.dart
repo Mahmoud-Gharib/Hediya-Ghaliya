@@ -161,9 +161,9 @@ class _HomePageState extends State<HomePage>
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => Navigator.pushNamed(context, '/create'),
+          onPressed: () => Navigator.pushNamed(context, '/create-gift'),
           backgroundColor: const Color(0xFFFF6F61),
-          icon: const Icon(Icons.add, color: Colors.white),
+          icon: const Icon(Icons.card_giftcard, color: Colors.white),
           label: const Text('إنشاء هدية', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800)),
         ),
       ),
@@ -294,7 +294,7 @@ class _QuickActions extends StatelessWidget
 		  (
             child: _CreateGiftButton
 			(
-              onTap: () => Navigator.pushNamed(context, '/create'),
+              onTap: () => Navigator.pushNamed(context, '/create-gift'),
             ),
           ),
           const SizedBox(height: 16),
@@ -710,7 +710,7 @@ class _MainDrawerState extends State<_MainDrawer>
                 ),
               ),
               _drawerItem(context, icon: Icons.home_outlined, label: 'الرئيسية', route: '/home'),
-              _drawerItem(context, icon: Icons.card_giftcard, label: 'إنشاء هدية', route: '/create'),
+              _drawerItem(context, icon: Icons.card_giftcard, label: 'إنشاء هدية', route: '/create-gift'),
               _drawerItem(context, icon: Icons.list_alt_outlined, label: 'هداياي', route: '/gifts'),
               _drawerItem(context, icon: Icons.star, label: 'آخر هدية', route: '/latest-gift'),
               
@@ -821,6 +821,14 @@ class _MainDrawerState extends State<_MainDrawer>
           return;
         }
         if (route == '/gifts') 
+		{
+          if (ModalRoute.of(context)?.settings.name != route) 
+		  {
+            Navigator.pushReplacementNamed(context, route, arguments: {'phone': widget.phone});
+          }
+          return;
+        }
+        if (route == '/latest-gift') 
 		{
           if (ModalRoute.of(context)?.settings.name != route) 
 		  {

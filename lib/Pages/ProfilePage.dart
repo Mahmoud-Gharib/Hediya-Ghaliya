@@ -55,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
     });
 
     final String token = await GitHubTokenService.getUserToken();
-    const String owner = 'mahmoud-gharib';
+    const String owner = 'Hed-Mahmoud-iya-Gha-Gharib-liya';
     const String repo = 'Users';
     const String path = 'users.json';
     final url = Uri.parse('https://api.github.com/repos/$owner/$repo/contents/$path');
@@ -148,7 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
     });
 
     final String token = await GitHubTokenService.getUserToken();
-    const String owner = 'mahmoud-gharib';
+    const String owner = 'Hed-Mahmoud-iya-Gha-Gharib-liya';
     const String repo = 'Users';
     const String path = 'users.json';
     final url = Uri.parse('https://api.github.com/repos/$owner/$repo/contents/$path');
@@ -248,7 +248,7 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() => deleting = true);
 
     final String token = await GitHubTokenService.getUserToken();
-    const String owner = 'mahmoud-gharib';
+    const String owner = 'Hed-Mahmoud-iya-Gha-Gharib-liya';
     const String repo = 'Users';
     const String path = 'users.json';
     final url = Uri.parse('https://api.github.com/repos/$owner/$repo/contents/$path');
@@ -315,7 +315,7 @@ class _ProfilePageState extends State<ProfilePage> {
     
     try {
       final String token = await GitHubTokenService.getUserToken();
-      const String owner = 'mahmoud-gharib';
+      const String owner = 'Hed-Mahmoud-iya-Gha-Gharib-liya';
       const String repo = 'Users';
       const String path = 'users.json';
       final url = Uri.parse('https://api.github.com/repos/$owner/$repo/contents/$path');
@@ -350,7 +350,7 @@ class _ProfilePageState extends State<ProfilePage> {
     });
 
     final String token = await GitHubTokenService.getUserToken();
-    const String owner = 'mahmoud-gharib';
+    const String owner = 'Hed-Mahmoud-iya-Gha-Gharib-liya';
     const String repo = 'Users';
     const String path = 'users.json';
     final url = Uri.parse('https://api.github.com/repos/$owner/$repo/contents/$path');

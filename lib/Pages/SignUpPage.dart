@@ -19,7 +19,7 @@ Future<void> saveUserToGitHub
 async 
 {
   final String token = await GitHubTokenService.getUserToken();
-  const String owner = 'mahmoud-gharib';
+  const String owner = 'Hed-Mahmoud-iya-Gha-Gharib-liya';
   const String repo =  'Users';
   const String path =  'users.json';
 
@@ -310,6 +310,7 @@ class _SignUpPageState extends State<SignUpPage> with SingleTickerProviderStateM
                             ),
                             TextFormField
 							(
+                              textDirection: TextDirection.rtl,
                               style: const TextStyle(color: Colors.white),
                               decoration: _inputDecoration(hint: ' اسمك '),
                               onChanged: (v) => name = v.trim(),
@@ -327,6 +328,7 @@ class _SignUpPageState extends State<SignUpPage> with SingleTickerProviderStateM
                             ),
                             TextFormField
 							(
+                              textDirection: TextDirection.rtl,
                               keyboardType: TextInputType.phone,
                               style: const TextStyle(color: Colors.white),
                               decoration: _inputDecoration(hint: '01xxxxxxxxx'),
@@ -346,12 +348,13 @@ class _SignUpPageState extends State<SignUpPage> with SingleTickerProviderStateM
                             ),
                             TextFormField
 							(
+                              textDirection: TextDirection.rtl,
                               obscureText: obscurePassword,
                               style: const TextStyle(color: Colors.white),
                               decoration: _inputDecoration
 							  (
                                 hint: '•••••••',
-                                suffixIcon: IconButton
+                                prefixIcon: IconButton
 								(
                                   icon: Icon(obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined, color: Colors.white70),
                                   onPressed: () => setState(() => obscurePassword = !obscurePassword),
@@ -373,12 +376,13 @@ class _SignUpPageState extends State<SignUpPage> with SingleTickerProviderStateM
                             ),
                             TextFormField
 							(
+                              textDirection: TextDirection.rtl,
                               obscureText: obscureConfirmPassword,
                               style: const TextStyle(color: Colors.white),
                               decoration: _inputDecoration
 							  (
                                 hint: '•••••••',
-                                suffixIcon: IconButton
+                                prefixIcon: IconButton
 								(
                                   icon: Icon(obscureConfirmPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined, color: Colors.white70),
                                   onPressed: () => setState(() => obscureConfirmPassword = !obscureConfirmPassword),
@@ -442,7 +446,7 @@ class _SignUpPageState extends State<SignUpPage> with SingleTickerProviderStateM
   }
 }
 
-InputDecoration _inputDecoration({String? hint, Widget? suffixIcon}) 
+InputDecoration _inputDecoration({String? hint, Widget? prefixIcon}) 
 {
   return InputDecoration
   (
@@ -477,6 +481,6 @@ InputDecoration _inputDecoration({String? hint, Widget? suffixIcon})
       fontWeight: FontWeight.w500,
       height: 1.2,
     ),
-    suffixIcon: suffixIcon,
+    prefixIcon: prefixIcon,
   );
 }

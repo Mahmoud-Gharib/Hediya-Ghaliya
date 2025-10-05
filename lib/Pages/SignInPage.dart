@@ -16,7 +16,7 @@ Future<Map<String, dynamic>?> loginWithGitHub
 async 
 {
   final String token = await GitHubTokenService.getUserToken();
-  const String owner = 'mahmoud-gharib';
+  const String owner = 'Hed-Mahmoud-iya-Gha-Gharib-liya';
   const String repo = 'Users';
   const String path = 'users.json';
 
@@ -331,6 +331,7 @@ class _SignInPageState extends State<SignInPage>
                             ),
                             TextFormField
 							(
+                              textDirection: TextDirection.rtl,
                               keyboardType: TextInputType.phone,
                               style: const TextStyle(color: Colors.white),
                               decoration: _inputDecoration(hint: '01xxxxxxxxx'),
@@ -360,12 +361,13 @@ class _SignInPageState extends State<SignInPage>
                             ),
                             TextFormField
 							(
+                              textDirection: TextDirection.rtl,
                               obscureText: obscurePassword,
                               style: const TextStyle(color: Colors.white),
                               decoration: _inputDecoration
 							  (
                                 hint: '•••••••',
-                                suffixIcon: IconButton
+                                prefixIcon: IconButton
 								(
                                   icon: Icon
 								  (
@@ -480,7 +482,7 @@ class _SignInPageState extends State<SignInPage>
   }
 }
 
-InputDecoration _inputDecoration({String? hint, Widget? suffixIcon}) 
+InputDecoration _inputDecoration({String? hint, Widget? prefixIcon}) 
 {
   return InputDecoration
   (
@@ -515,6 +517,6 @@ InputDecoration _inputDecoration({String? hint, Widget? suffixIcon})
       fontWeight: FontWeight.w500,
       height: 1.2,
     ),
-    suffixIcon: suffixIcon,
+    prefixIcon: prefixIcon,
   );
 }
